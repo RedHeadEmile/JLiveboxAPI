@@ -15,7 +15,7 @@ public class ProtocolNumber {
     }
 
     public String toNamesString() {
-        return String.join(",", protocols.stream().map(p -> p.name).toList())
+        return String.join(",", protocols.stream().map(p -> p.name).toList());
     }
 
     private static ProtocolNumber fromRaw(String raw, Function<String, EProtocolNumber> converter) {

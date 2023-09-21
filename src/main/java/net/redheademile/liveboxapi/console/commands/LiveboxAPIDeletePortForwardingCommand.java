@@ -12,7 +12,7 @@ public class LiveboxAPIDeletePortForwardingCommand implements ILiveboxAPICommand
     }
 
     @Override
-    public void execute(LiveboxAPI api, Scanner in, Object... options) throws LiveboxException {
+    public void execute(LiveboxAPI api, Scanner in, String... args) throws LiveboxException {
         System.out.println();
         System.out.println();
 

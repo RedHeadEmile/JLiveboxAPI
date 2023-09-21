@@ -1,7 +1,7 @@
 package net.redheademile;
 
 import net.redheademile.liveboxapi.LiveboxAPI;
-import net.redheademile.liveboxapi.console.TableUtils;
+import net.redheademile.liveboxapi.utils.TableUtils;
 import net.redheademile.liveboxapi.exceptions.LiveboxException;
 import net.redheademile.liveboxapi.utils.ProtocolNumber;
 
@@ -27,7 +27,7 @@ public class LiveboxapiLiveboxAPITest {
                         rule.Enable ? "Y" : "N",
                         rule.InternalPort,
                         rule.ExternalPort,
-                        ProtocolNumber.formatRawNumbers(rule.Protocol),
+                        ProtocolNumber.fromIds(rule.Protocol).toNamesString(),
                         rule.DestinationIPAddress
                 }).toList();
 

@@ -47,31 +47,34 @@ public class LiveboxAPISetPortForwardingCommand implements ILiveboxAPICommand {
         }
     }
 
-    private void handleNewRule(LiveboxAPI api, Scanner in) {
+    private void handleNewRule(LiveboxAPI api, Scanner in, String id) throws LiveboxException {
         SetPortForwardingLiveboxRequest request = new SetPortForwardingLiveboxRequest(
-                LiveboxAPIConsole.getInputFromConsole(in, "Id", String.class, null),
+                id,
                 LiveboxAPIConsole.getInputFromConsole(in, "Enable", Boolean.class, true),
                 LiveboxAPIConsole.getInputFromConsole(in, "Internal Port", String.class, null),
                 LiveboxAPIConsole.getInputFromConsole(in, "External Port", String.class, null),
-                LiveboxAPIConsole.getInputFromConsole(in, "Source Prefix", String.class, null),
+                LiveboxAPIConsole.getInputFromConsole(in, "Source Prefix", String.class, ""),
                 LiveboxAPIConsole.getInputFromConsole(in, "Destination IP Address", String.class, null),
-                LiveboxAPIConsole.getInputFromConsole(in, "Protocol", ProtocolNumber.class, null),
+                LiveboxAPIConsole.getInputFromConsole(in, "Protocol", ProtocolNumber.class, null).toIdsString(),
                 LiveboxAPIConsole.getInputFromConsole(in, "Persistent", Boolean.class, true),
                 LiveboxAPIConsole.getInputFromConsole(in, "Description", String.class, null),
-                LiveboxAPIConsole.getInputFromConsole(in, "SourceInterface", String.class, null),
-                LiveboxAPIConsole.getInputFromConsole(in, "Origin", String.class, null)
+                LiveboxAPIConsole.getInputFromConsole(in, "Source Interface", String.class, "data"),
+                LiveboxAPIConsole.getInputFromConsole(in, "Origin", String.class, "webui")
         );
+
+        api.setPortForwarding(request);
+        System.out.println("Created!");
     }
 
     @Override
-    public void execute(LiveboxAPI api, Scanner in, Object... options) throws LiveboxException {
+    public void execute(LiveboxAPI api, Scanner in, String... args) throws LiveboxException {
         System.out.println();
         System.out.println();
         String id = LiveboxAPIConsole.getInputFromConsole(in, "Id", String.class, null);
 
         PortForwardingLiveboxResponse.LiveboxPortForwardingResponseStatus existingRules = api.getPortForwarding().status.values().stream().filter(s -> s.Id.equalsIgnoreCase(id)).findFirst().orElse(null);
         if (existingRules != null) handleExistingRules(api, in, existingRules);
-        else handleNewRule(api, in);
+        else handleNewRule(api, in, id);
 
         System.out.println();
         System.out.println();

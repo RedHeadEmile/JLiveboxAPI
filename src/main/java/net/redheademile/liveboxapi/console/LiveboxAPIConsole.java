@@ -5,6 +5,7 @@ import net.redheademile.liveboxapi.console.commands.ILiveboxAPICommand;
 import net.redheademile.liveboxapi.console.commands.LiveboxAPIDeletePortForwardingCommand;
 import net.redheademile.liveboxapi.console.commands.LiveboxAPIGetPortForwardingCommand;
 import net.redheademile.liveboxapi.console.commands.LiveboxAPISetPortForwardingCommand;
+import net.redheademile.liveboxapi.utils.ProtocolNumber;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -44,6 +45,13 @@ public class LiveboxAPIConsole {
                 catch (NumberFormatException e) {}
             }
 
+            else if (type == ProtocolNumber.class) {
+                try {
+                    ProtocolNumber pn = ProtocolNumber.fromNames(input);
+                    return (T) pn;
+                } catch (IllegalArgumentException e) {}
+            }
+
             else throw new UnsupportedOperationException("Unsupported type");
         }
     }
@@ -79,12 +87,15 @@ public class LiveboxAPIConsole {
 
             if (inputCommand == null) break;
             if (inputCommand.isBlank()) continue;
+            inputCommand = inputCommand.trim();
 
+            String commandName = inputCommand.split(" ")[0];
+            String[] commandArgs = inputCommand.contains(" ") ? inputCommand.substring(commandName.length() + 1).split(" ") : new String[0];
             for (ILiveboxAPICommand command : commands)
                 for (String nameOrAliases : command.getNameAndAliases())
-                    if (nameOrAliases.equalsIgnoreCase(inputCommand)) {
+                    if (nameOrAliases.equalsIgnoreCase(commandName)) {
                         try {
-                            command.execute(api);
+                            command.execute(api, in, commandArgs);
                         }
                         catch (Exception e) { e.printStackTrace(); }
                         break;

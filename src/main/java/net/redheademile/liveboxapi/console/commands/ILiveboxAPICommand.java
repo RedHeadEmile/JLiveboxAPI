@@ -7,5 +7,5 @@ import java.util.Scanner;
 
 public interface ILiveboxAPICommand {
     String[] getNameAndAliases();
-    void execute(LiveboxAPI api, Scanner in, Object... options) throws LiveboxException;
+    void execute(LiveboxAPI api, Scanner in, String... args) throws LiveboxException;
 }

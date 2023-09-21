@@ -1,4 +1,4 @@
-package net.redheademile.liveboxapi.console;
+package net.redheademile.liveboxapi.utils;
 
 import java.util.List;
 
